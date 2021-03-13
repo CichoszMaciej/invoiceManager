@@ -28,6 +28,7 @@ def add_product(request):
         form = ProductCreate(request.POST)
         if form.is_valid():
             product = form.save(commit=False)
+            product.price_gross = product.cost * (1 + (product.gain / 100))
             product.save()
             return HttpResponseRedirect(reverse(product_list) + '?info=success')
         else:
@@ -35,7 +36,7 @@ def add_product(request):
 
     else:
         context = {
-            'form': ProductCreate()
+            'form': ProductCreate(initial={'quantity_stock': 1})
         }
 
         return render(request, 'products/new_product.html', context)
