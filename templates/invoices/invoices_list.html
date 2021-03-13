@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">
+                <a href="{% url 'add_invoice' %}" class="btn btn-success">Nowy produkt</a>
+            </li>
+        </ol>
+    </nav>
+    {% if info == 'success' %}
+        <div class="alert alert-success" role="alert">
+            Faktura dodany pomyślnie!
+        </div>
+    {% endif %}
+    {% if info == 'success-edit' %}
+        <div class="alert alert-success" role="alert">
+            User has been successfully updated!
+        </div>
+    {% endif %}
+    {% if info == 'delete' %}
+        <div class="alert alert-danger" role="alert">
+            User has been successfully deleted!
+        </div>
+    {% endif %}
+    <table class="table table-light table-bordered table-striped">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nazwa</th>
+            <th scope="col">Opis</th>
+            <th scope="col">Cena brutto</th>
+            <th scope="col">Cena netto</th>
+            <th scope="col">Cena VAT</th>
+            <th scope="col">Stawka VAT</th>
+            <th scope="col">Stan magazynowy</th>
+            <th scope="col">Aktywny</th>
+            <th scope="col">Czas dodania</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in invoices %}
+            <tr>
+                <td>{{ p.id }}</td>
+                <td>{{ p.name }}</td>
+                <td>{{ p.description }}</td>
+                <td>{{ p.price_gross }}</td>
+                <td>{{ p.price_net }}</td>
+                <td>{{ p.price_vat }}</td>
+                <td>{{ p.vat_rate }}</td>
+                <td>{{ p.quantity_stock }}</td>
+                <td>{{ p.is_active }}</td>
+                <td>{{ p.timestamp }}</td>
+                <td>
+                    <a href="" class="mx-2"><i class="fas fa-user-times"></i></a>
+                    <a href="" class="mx-2"><i class="fas fa-user-edit"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="12" class="text-center bg-info">W bazie znajduje się {{ length }} faktur.</td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}
