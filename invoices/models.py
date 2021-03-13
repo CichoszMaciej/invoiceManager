@@ -30,7 +30,7 @@ class Invoice(models.Model):
     sales_date = models.DateField(null=True, verbose_name="Data sprzedaży")
     invoice_date = models.DateField(null=True, verbose_name="Data wystawienia faktury")
     payment_date = models.DateField(null=True, verbose_name="Data zapłaty")
-    paid = models.DecimalField(null=True, decimal_places=2, max_digits=16, verbose_name="Wartość opłacenia")
+    paid = models.DecimalField(null=True, decimal_places=2, max_digits=16, verbose_name="Ile zapłacono")
     month = models.IntegerField(null=True, verbose_name="Miesiąc")
     year = models.IntegerField(null=True, verbose_name="Rok")
 
