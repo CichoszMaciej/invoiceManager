@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">
+                <a href="{% url 'add_client' %}" class="btn btn-success">Nowy klient</a>
+            </li>
+        </ol>
+    </nav>
+    {% if info == 'success' %}
+        <div class="alert alert-success" role="alert">
+            New user has been successfully created!
+        </div>
+    {% endif %}
+    {% if info == 'success-edit' %}
+        <div class="alert alert-success" role="alert">
+            User has been successfully updated!
+        </div>
+    {% endif %}
+    {% if info == 'delete' %}
+        <div class="alert alert-danger" role="alert">
+            User has been successfully deleted!
+        </div>
+    {% endif %}
+    <table class="table table-light table-bordered table-striped">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nazwa klienta</th>
+            <th scope="col">NIP</th>
+            <th scope="col">REGON</th>
+            <th scope="col">Adres</th>
+            <th scope="col">Czas stworzenia</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for c in clients %}
+            <tr>
+                <td>{{ c.id }}</td>
+                <td>{{ c.client_name }}</td>
+                <td>{{ c.nip }}</td>
+                <td>{{ c.regon }}</td>
+                <td>{{ c.address }}</td>
+                <td>{{ c.timestamp }}</td>
+                <td>
+                    <a href="" class="mx-2"><i class="fas fa-user-times"></i></a>
+                    <a href="" class="mx-2"><i class="fas fa-user-edit"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
