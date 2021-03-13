@@ -3,7 +3,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item active" aria-current="page">
-                <a href="{% url 'add_invoice' %}" class="btn btn-success">Nowy produkt</a>
+                <a href="{% url 'add_invoice' %}" class="btn btn-success">Nowa faktura</a>
             </li>
         </ol>
     </nav>
@@ -26,30 +26,30 @@
         <thead>
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">Nazwa</th>
-            <th scope="col">Opis</th>
-            <th scope="col">Cena brutto</th>
-            <th scope="col">Cena netto</th>
-            <th scope="col">Cena VAT</th>
-            <th scope="col">Stawka VAT</th>
-            <th scope="col">Stan magazynowy</th>
-            <th scope="col">Aktywny</th>
-            <th scope="col">Czas dodania</th>
+            <th scope="col">Numer faktury</th>
+            <th scope="col">Status</th>
+            <th scope="col">Typ</th>
+            <th scope="col">Klient</th>
+            <th scope="col">Data faktury</th>
+            <th scope="col">Brutto</th>
+            <th scope="col">Netto</th>
+            <th scope="col">VAT</th>
+            <th scope="col">Ile zapłacono</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody>z
         {% for i in invoices %}
             <tr>
-                <td>{{ p.id }}</td>
-                <td>{{ p.name }}</td>
-                <td>{{ p.description }}</td>
-                <td>{{ p.price_gross }}</td>
-                <td>{{ p.price_net }}</td>
-                <td>{{ p.price_vat }}</td>
-                <td>{{ p.vat_rate }}</td>
-                <td>{{ p.quantity_stock }}</td>
-                <td>{{ p.is_active }}</td>
-                <td>{{ p.timestamp }}</td>
+                <td>{{ i.id }}</td>
+                <td>{{ i.invoice_nr }}</td>
+                <td>{{ i.invoice_status }}</td>
+                <td>{{ i.invoice_type }}</td>
+                <td>{{ i.client }}</td>
+                <td>{{ i.invoice_date }}</td>
+                <td>{{ i.price_gross }}</td>
+                <td>{{ i.price_net }}</td>
+                <td>{{ i.price_vat }}</td>
+                <td>{{ i.paid }}</td>
                 <td>
                     <a href="" class="mx-2"><i class="fas fa-user-times"></i></a>
                     <a href="" class="mx-2"><i class="fas fa-user-edit"></i></a>
