@@ -5,6 +5,7 @@ from products.models import Product
 
 
 class Invoice(models.Model):
+    invoice_nr = models.CharField(null=True, max_length=128)
     client = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
     price_gross = models.DecimalField(null=True, decimal_places=2, max_digits=16)
     price_net = models.DecimalField(null=True, decimal_places=2, max_digits=16)
@@ -13,7 +14,6 @@ class Invoice(models.Model):
     invoice_date = models.DateField(null=True)
     payment_date = models.DateField(null=True)
     paid = models.DecimalField(null=True, decimal_places=2, max_digits=16)
-    invoice_nr = models.CharField(null=True, max_length=128)
     month = models.IntegerField(null=True)
     year = models.IntegerField(null=True)
 
