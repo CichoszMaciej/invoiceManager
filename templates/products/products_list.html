@@ -3,13 +3,13 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item active" aria-current="page">
-                <a href="{% url 'add_place' %}" class="btn btn-success">Nowe miejsce sprzedaży</a>
+                <a href="{% url 'add_product' %}" class="btn btn-success">Nowy produkt</a>
             </li>
         </ol>
     </nav>
     {% if info == 'success' %}
         <div class="alert alert-success" role="alert">
-            Miejsce sprzedaży dodane pomyślnie!
+            Produkt dodany pomyślnie!
         </div>
     {% endif %}
     {% if info == 'success-edit' %}
@@ -27,16 +27,28 @@
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Nazwa</th>
-            <th scope="col">Adres</th>
-            <th scope="col">Czas stworzenia</th>
+            <th scope="col">Opis</th>
+            <th scope="col">Cena brutto</th>
+            <th scope="col">Cena netto</th>
+            <th scope="col">Cena VAT</th>
+            <th scope="col">Stawka VAT</th>
+            <th scope="col">Stan magazynowy</th>
+            <th scope="col">Aktywny</th>
+            <th scope="col">Czas dodania</th>
         </tr>
         </thead>
         <tbody>
-        {% for p in places %}
+        {% for p in products %}
             <tr>
                 <td>{{ p.id }}</td>
                 <td>{{ p.name }}</td>
-                <td>{{ p.address }}</td>
+                <td>{{ p.description }}</td>
+                <td>{{ p.price_gross }}</td>
+                <td>{{ p.price_net }}</td>
+                <td>{{ p.price_vat }}</td>
+                <td>{{ p.vat_rate }}</td>
+                <td>{{ p.quantity_stock }}</td>
+                <td>{{ p.is_active }}</td>
                 <td>{{ p.timestamp }}</td>
                 <td>
                     <a href="" class="mx-2"><i class="fas fa-user-times"></i></a>
@@ -45,7 +57,7 @@
             </tr>
         {% endfor %}
         <tr>
-            <td colspan="5" class="text-center bg-info">W bazie znajduje się {{ length }} miejsc sprzedażowych.</td>
+            <td colspan="12" class="text-center bg-info">W bazie znajduje się {{ length }} produktów.</td>
         </tr>
         </tbody>
     </table>

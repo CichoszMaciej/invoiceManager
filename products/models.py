@@ -9,4 +9,8 @@ class Product(models.Model):
     price_vat = models.DecimalField(null=True, decimal_places=2, max_digits=16)
     vat_rate = models.IntegerField(null=True)
     is_active = models.BooleanField(default=True)
+    quantity_stock = models.DecimalField(null=True, decimal_places=3, max_digits=16)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name + '(' + str(self.quantity_stock) + ')'
