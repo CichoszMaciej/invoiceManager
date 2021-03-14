@@ -1,27 +1,33 @@
 {% extends 'base.html' %}
 {% block content %}
-     <br>
+    <br>
     <br>
     <ul class="nav justify-content-center">
 
-    <h1>Witamy w programie FakturyWEB</h1>
+        <h1>Witamy w programie FakturyWEB</h1>
 
     </ul>
-     <br>
+    <br>
     <br>
     <ul class="nav nav-pills nav-fill">
         <li class="nav-item">
-            <a href="/invoices/add/"><button type="button" class="btn btn-primary btn-lg">Dodaj nową fakturę</button></a>
+            <a href="{% url 'add_invoice' %}">
+                <button type="button" class="btn btn-primary btn-lg">Dodaj nową fakturę</button>
+            </a>
         </li>
         <li class="nav-item">
-            <a href="/clients/add/"><button type="button" class="btn btn-primary btn-lg">Dodaj kontrahenta</button></a>
+            <a href="{%  url 'add_client' %}">
+                <button type="button" class="btn btn-primary btn-lg">Dodaj kontrahenta</button>
+            </a>
         </li>
         <li class="nav-item">
-            <a href="/products/add/"><button type="button" class="btn btn-primary btn-lg">Dodaj dodaj produkt</button></a>
+            <a href="{%  url 'add_product' %}">
+                <button type="button" class="btn btn-primary btn-lg">Dodaj dodaj produkt</button>
+            </a>
         </li>
     </ul>
     <br>
     <br>
-        <p>Twój dzisiejszy przychód: </p>
+    <p>Twój dzisiejszy przychód: </p>
 
 {% endblock %}
