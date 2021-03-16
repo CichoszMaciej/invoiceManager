@@ -22,4 +22,4 @@ class Product(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name + '(' + str(self.quantity_stock) + ')'
+        return self.name + ' - Cena brutto: ' + str(self.price_gross) + 'PLN, Stan. mag: ' + str(self.quantity_stock)

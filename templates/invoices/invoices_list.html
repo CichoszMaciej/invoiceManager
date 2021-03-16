@@ -37,7 +37,7 @@
             <th scope="col">Ile zapłacono</th>
         </tr>
         </thead>
-        <tbody>z
+        <tbody>
         {% for i in invoices %}
             <tr>
                 <td>{{ i.id }}</td>
@@ -51,13 +51,13 @@
                 <td>{{ i.price_vat }}</td>
                 <td>{{ i.paid }}</td>
                 <td>
-                    <a href="" class="mx-2"><i class="fas fa-user-times"></i></a>
-                    <a href="" class="mx-2"><i class="fas fa-user-edit"></i></a>
+                    <a href="{% url 'add_invoice_record' i.id %}" class="mx-2"><i class="fas fa-plus-circle"></i></a>
+                    <a href="{% url 'view_invoice' i.id %}" class="mx-2"><i class="fas fa-user-edit"></i></a>
                 </td>
             </tr>
         {% endfor %}
         <tr>
-            <td colspan="12" class="text-center bg-info">W bazie znajduje się {{ length }} faktur.</td>
+            <td colspan="12" class="text-center bg-info">W bazie znajduje się {{ length }} faktura.</td>
         </tr>
         </tbody>
     </table>

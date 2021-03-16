@@ -1,6 +1,7 @@
 from django.db import models
 
 from clients.models import Client
+from places.models import Place
 from products.models import Product
 
 
@@ -20,8 +21,10 @@ class InvoiceType(models.Model):
 
 
 class Invoice(models.Model):
-    invoice_status = models.ForeignKey(InvoiceStatus, null=True, on_delete=models.DO_NOTHING, verbose_name="Status faktury")
+    invoice_status = models.ForeignKey(InvoiceStatus, null=True, on_delete=models.DO_NOTHING,
+                                       verbose_name="Status faktury")
     invoice_type = models.ForeignKey(InvoiceType, null=True, on_delete=models.DO_NOTHING, verbose_name="Typ faktury")
+    place = models.ForeignKey(Place, on_delete=models.DO_NOTHING, null=True, verbose_name='Miejsce sprzedaży')
     invoice_nr = models.CharField(null=True, max_length=128, verbose_name="Numer Faktury")
     client = models.ForeignKey(Client, on_delete=models.DO_NOTHING, verbose_name="Klient")
     price_gross = models.DecimalField(null=True, decimal_places=2, max_digits=16, verbose_name="Cena brutto")
@@ -40,12 +43,12 @@ class Invoice(models.Model):
 
 class InvoiceRecord(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.DO_NOTHING)
-    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
-    price_gross = models.DecimalField(null=True, decimal_places=2, max_digits=16)
-    price_net = models.DecimalField(null=True, decimal_places=2, max_digits=16)
+    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING, verbose_name='Produkt')
+    price_gross = models.DecimalField(null=True, decimal_places=2, max_digits=16, verbose_name='Cena brutto')
+    price_net = models.DecimalField(null=True, decimal_places=2, max_digits=16, verbose_name='Cena netto')
     price_vat = models.DecimalField(null=True, decimal_places=2, max_digits=16)
     vat_rate = models.IntegerField(null=True)
-    quantity = models.DecimalField(null=True, decimal_places=3, max_digits=16)
+    quantity = models.DecimalField(null=True, decimal_places=3, max_digits=16, verbose_name='Ilość')
     total_price_gross = models.DecimalField(null=True, decimal_places=2, max_digits=16)
     total_price_net = models.DecimalField(null=True, decimal_places=2, max_digits=16)
     total_price_vat = models.DecimalField(null=True, decimal_places=2, max_digits=16)

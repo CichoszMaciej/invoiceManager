@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">
+                <a href="" class="btn btn-success">Nowa faktura</a>
+            </li>
+        </ol>
+    </nav>
+    <table class="table table-light table-bordered table-striped">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Produkt</th>
+            <th scope="col">Cena brutto</th>
+            <th scope="col">Cena netto</th>
+            <th scope="col">Cena vat</th>
+            <th scope="col">VAT</th>
+            <th scope="col">Ilość</th>
+            <th scope="col">Wartość brutto</th>
+            <th scope="col">Wartość netto</th>
+            <th scope="col">Wartość VAT</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in items %}
+            <tr>
+                <td>{{ i.id }}</td>
+                <td>{{ i.product.name }}</td>
+                <td>{{ i.price_gross }}</td>
+                <td>{{ i.price_net }}</td>
+                <td>{{ i.price_vat }}</td>
+                <td>{{ i.vat_rate }}</td>
+                <td>{{ i.quantity }}</td>
+                <td>{{ i.total_price_gross }}</td>
+                <td>{{ i.total_price_net }}</td>
+                <td>{{ i.total_price_vat }}</td>
+                <td>
+                    <a href="" class="mx-2"><i class="fas fa-plus-circle"></i></a>
+                    <a href="" class="mx-2"><i class="fas fa-user-edit"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

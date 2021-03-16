@@ -7,3 +7,5 @@ class PlaceForm(ModelForm):
     class Meta:
         model = Place
         fields = '__all__'
+
+

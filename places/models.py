@@ -4,7 +4,7 @@ from django.db import models
 class Place(models.Model):
     name = models.CharField(null=True, max_length=64)
     address = models.CharField(null=True, max_length=255)
-    invoiceCode = models.CharField(null=True, max_length=5)
+    invoice_code = models.CharField(null=True, max_length=5)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
