@@ -14,7 +14,7 @@
     {% endif %}
     {% if info == 'success-edit' %}
         <div class="alert alert-success" role="alert">
-            User has been successfully updated!
+            Produkt został pomyślnie zedytowany
         </div>
     {% endif %}
     {% if info == 'delete' %}
@@ -44,15 +44,19 @@
                 <td>{{ p.name }}</td>
                 <td>{{ p.description }}</td>
                 <td>{{ p.price_gross }}</td>
-                <td>{{ p.price_net}}</td>
+                <td>{{ p.price_net }}</td>
                 <td>{{ p.price_vat }}</td>
                 <td>{{ p.vat_rate }}</td>
                 <td>{{ p.quantity_stock }}</td>
-                <td>{{ p.is_active }}</td>
+                <td>
+                    {% if p.is_active %}
+                        <i class="fas fa-check-circle"></i>
+                    {% else %}
+                        <i class="fas fa-times-circle"></i>
+                    {% endif %}</td>
                 <td>{{ p.timestamp }}</td>
                 <td>
-                    <a href="" class="mx-2"><i class="fas fa-user-times"></i></a>
-                    <a href="" class="mx-2"><i class="fas fa-user-edit"></i></a>
+                    <a href="{% url 'edit_product' p.id %}" class="mx-2"><i class="far fa-edit"></i></a>
                 </td>
             </tr>
         {% endfor %}

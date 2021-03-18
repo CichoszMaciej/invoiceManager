@@ -9,7 +9,7 @@ from django.urls import reverse
 
 from invoices.forms import InvoiceCreate, InvoiceRecordAdd
 from invoices.models import Invoice, InvoiceRecord
-from products.forms import ProductCreate
+from products.models import Product
 
 
 @login_required()
@@ -92,8 +92,10 @@ def add_invoice_record(request, invoice_id):
             return render(request, 'invoices/new_invoice_record.html', {'form': form})
 
     else:
+        form = InvoiceRecordAdd(initial={'quantity': 0})
+        form.fields['product'].queryset = Product.objects.filter(is_active=True)
         context = {
-            'form': InvoiceRecordAdd(initial={'quantity': 0})
+            'form': form
         }
 
         return render(request, 'invoices/new_invoice_record.html', context)
