@@ -29,6 +29,7 @@
             <th scope="col">Nazwa</th>
             <th scope="col">Adres</th>
             <th scope="col">Czas stworzenia</th>
+            <th scope="col">Aktywny</th>
         </tr>
         </thead>
         <tbody>
@@ -39,13 +40,23 @@
                 <td>{{ p.address }}</td>
                 <td>{{ p.timestamp }}</td>
                 <td>
-                    <a href="" class="mx-2"><i class="fas fa-user-times"></i></a>
-                    <a href="" class="mx-2"><i class="fas fa-user-edit"></i></a>
+                    {% if p.is_active %}
+                        <i class="fas fa-check-circle"></i>
+                    {% else %}
+                        <i class="fas fa-times-circle"></i>
+                    {% endif %}</td>
+                <td>
+                    <a href="{% url 'toggle_place' p.id %}" class="mx-2">{% if p.is_active %}
+                        <i class="fas fa-power-off text-danger"></i>
+                    {% else %}
+                        <i class="fas fa-power-off text-success"></i>
+                    {% endif %}</a>
+                    <a href="{% url 'edit_place' p.id %}" class="mx-2"><i class="fas fa-user-edit"></i></a>
                 </td>
             </tr>
         {% endfor %}
         <tr>
-            <td colspan="5" class="text-center bg-info">W bazie znajduje się {{ length }} miejsc sprzedażowych.</td>
+            <td colspan="6" class="text-center bg-info">W bazie znajduje się {{ length }} miejsc sprzedażowych.</td>
         </tr>
         </tbody>
     </table>

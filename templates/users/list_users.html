@@ -3,48 +3,50 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item active" aria-current="page">
-                <a href="{% url 'add_client' %}" class="btn btn-success">Nowy klient</a>
+                <a href="{% url 'add_user' %}" class="btn btn-success">Nowy pracownik</a>
             </li>
         </ol>
     </nav>
     {% if info == 'success' %}
         <div class="alert alert-success" role="alert">
-            Nowy klient pomyślnie dodany!
+            Pracownik pomyślnie dodany!
         </div>
     {% endif %}
     {% if info == 'success-edit' %}
         <div class="alert alert-success" role="alert">
-            User has been successfully updated!
+            Pracownik pomyślnie zapisany!
         </div>
     {% endif %}
     {% if info == 'delete' %}
         <div class="alert alert-danger" role="alert">
-            User has been successfully deleted!
+            Użytkownik pomyślnie usunięty!
         </div>
     {% endif %}
     <table class="table table-light table-bordered table-striped">
         <thead>
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">Nazwa klienta</th>
-            <th scope="col">NIP</th>
+            <th scope="col">Login</th>
+            <th scope="col">Imię</th>
+            <th scope="col">Nazwisko</th>
             <th scope="col">Adres</th>
-            <th scope="col">City</th>
+            <th scope="col">E-Mail</th>
             <th scope="col">Czas stworzenia</th>
         </tr>
         </thead>
         <tbody>
-        {% for c in clients %}
+        {% for u in users %}
             <tr>
-                <td>{{ c.id }}</td>
-                <td>{{ c.client_name }}</td>
-                <td>{{ c.nip }}</td>
-                <td>{{ c.regon }}</td>
-                <td>{{ c.address }}</td>
-                <td>{{ c.timestamp }}</td>
+                <td>{{ u.id }}</td>
+                <td>{{ u.username }}</td>
+                <td>{{ u.first_name }}</td>
+                <td>{{ u.last_name }}</td>
+                <td>{{ u.address }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.date_joined }}</td>
                 <td>
-                    <a href="" class="mx-2"><i class="fas fa-user-times"></i></a>
-                    <a href="" class="mx-2"><i class="fas fa-user-edit"></i></a>
+                    <a href="{% url 'delete_user' u.id %}" class="mx-2"><i class="fas fa-user-times"></i></a>
+                    <a href="{% url 'edit_user' u.id %}" class="mx-2"><i class="fas fa-user-edit"></i></a>
                 </td>
             </tr>
         {% endfor %}

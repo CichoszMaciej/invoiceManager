@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
-from invoices.forms import InvoiceCreate, InvoiceRecordAdd
+from invoices.forms import InvoiceForm, InvoiceRecordAdd, InvoiceEditForm
 from invoices.models import Invoice, InvoiceRecord
 from products.models import Product
 
@@ -30,7 +30,7 @@ def invoice_list(request):
 @login_required()
 def add_invoice(request):
     if request.method == 'POST':
-        form = InvoiceCreate(request.POST)
+        form = InvoiceForm(request.POST)
         if form.is_valid():
             invoice = form.save(commit=False)
             invoice.price_gross = 0
@@ -49,7 +49,7 @@ def add_invoice(request):
 
     else:
         context = {
-            'form': InvoiceCreate()
+            'form': InvoiceForm()
         }
 
         return render(request, 'invoices/new_invoice.html', context)
@@ -99,3 +99,36 @@ def add_invoice_record(request, invoice_id):
         }
 
         return render(request, 'invoices/new_invoice_record.html', context)
+
+
+@login_required()
+def edit_invoice(request, invoice_id):
+    invoice = get_object_or_404(Invoice, pk=invoice_id)
+    if request.method == 'POST':
+        form = InvoiceEditForm(request.POST, instance=invoice)
+        if form.is_valid():
+            invoice = form.save(commit=False)
+            invoice.save()
+            return HttpResponseRedirect(reverse(invoice_list) + '?info=success-edit')
+        else:
+            return render(request, 'invoices/edit_invoice.html', {'form': form, 'invoice_nr': invoice.invoice_nr})
+
+    else:
+        context = {
+            'form': InvoiceEditForm(instance=invoice),
+            'invoice_nr': invoice.invoice_nr
+        }
+
+        return render(request, 'invoices/edit_invoice.html', context)
+
+
+@login_required()
+def delete_invoice(request, invoice_id):
+    invoice = get_object_or_404(Invoice, pk=invoice_id)
+    invoice_records = InvoiceRecord.objects.filter(invoice=invoice)
+    if 'd' in request.GET and request.GET['d'] == 'yes':
+        invoice_records.delete()
+        invoice.delete()
+        return HttpResponseRedirect(reverse(invoice_list) + '?info=delete')
+    else:
+        return render(request, 'invoices/delete_invoice.html', {'invoice': invoice})

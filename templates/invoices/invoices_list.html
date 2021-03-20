@@ -14,12 +14,12 @@
     {% endif %}
     {% if info == 'success-edit' %}
         <div class="alert alert-success" role="alert">
-            User has been successfully updated!
+            Faktura pomyślnie zaktualizowana!
         </div>
     {% endif %}
     {% if info == 'delete' %}
         <div class="alert alert-danger" role="alert">
-            User has been successfully deleted!
+            Faktura pomyślnie usunięta!
         </div>
     {% endif %}
     <table class="table table-light table-bordered table-striped">
@@ -41,7 +41,7 @@
         {% for i in invoices %}
             <tr>
                 <td>{{ i.id }}</td>
-                <td>{{ i.invoice_nr }}</td>
+                <td><a href="{% url 'view_invoice' i.id %}">{{ i.invoice_nr }}</a></td>
                 <td>{{ i.invoice_status }}</td>
                 <td>{{ i.invoice_type }}</td>
                 <td>{{ i.client }}</td>
@@ -52,7 +52,8 @@
                 <td>{{ i.paid }}</td>
                 <td>
                     <a href="{% url 'add_invoice_record' i.id %}" class="mx-2"><i class="fas fa-plus-circle"></i></a>
-                    <a href="{% url 'view_invoice' i.id %}" class="mx-2"><i class="fas fa-user-edit"></i></a>
+                    <a href="{% url 'delete_invoice' i.id %}"><i class="fas fa-trash text-danger"></i></a>
+                    <a href="{% url 'edit_invoice' i.id %}" class="mx-2"><i class="fas fa-user-edit"></i></a>
                 </td>
             </tr>
         {% endfor %}

@@ -10,7 +10,7 @@
     {% load static %}
     <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet"
-          crossorigin="anonymous"/>
+          crossorigi n="anonymous"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"
             crossorigin="anonymous"></script>
 </head>
@@ -48,40 +48,11 @@
                         Produkty
                     </a>
                     <div class="sb-sidenav-menu-heading">Ustawienia</div>
-                    <a class="nav-link" href="">
+                    <a class="nav-link" href="{% url 'users_list' %}">
                         <div class="sb-nav-link-icon"><i class="fas fa-user-cog"></i></div>
                         Użytkownicy
                     </a>
-                    {% if request.user.is_admin %}
-                        <div class="sb-sidenav-menu-heading">Management</div>
 
-                        <a class="nav-link" href="">
-                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                            Users
-                        </a>
-                        <a class="nav-link" href="">
-                            <div class="sb-nav-link-icon"><i class="fas fa-server"></i></div>
-                            Web apps manager
-                        </a>
-                        <a class="nav-link" href="">
-                            <div class="sb-nav-link-icon"><i class="fas fa-database"></i></div>
-                            Databases manager
-                        </a>
-
-                        <a class="nav-link" href="">
-                            <div class="sb-nav-link-icon"><i class="fas fa-ad"></i></div>
-                            Subdomains manager
-                        </a>
-
-                        <a class="nav-link" href="">
-                            <div class="sb-nav-link-icon"><i class="fas fa-indent"></i></div>
-                            Processes manager
-                        </a>
-                        <a class="nav-link" href="">
-                            <div class="sb-nav-link-icon"><i class="fab fa-usps"></i></div>
-                            Services manager
-                        </a>
-                    {% endif %}
                 </div>
             </div>
             <div class="sb-sidenav-footer">

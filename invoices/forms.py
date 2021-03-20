@@ -3,13 +3,22 @@ from django.forms import ModelForm, DateInput, DecimalField
 from invoices.models import Invoice, InvoiceRecord
 
 
-class InvoiceCreate(ModelForm):
+class InvoiceForm(ModelForm):
     class Meta:
         model = Invoice
         fields = ('place', 'invoice_status', 'invoice_type', 'client', 'invoice_date', 'sales_date', 'payment_date')
         widgets = {
             'invoice_date': DateInput(attrs={'type': 'date'}),
             'sales_date': DateInput(attrs={'type': 'date'}),
+            'payment_date': DateInput(attrs={'type': 'date'})
+        }
+
+
+class InvoiceEditForm(ModelForm):
+    class Meta:
+        model = Invoice
+        fields = ('invoice_status', 'invoice_type', 'payment_date', 'paid')
+        widgets = {
             'payment_date': DateInput(attrs={'type': 'date'})
         }
 

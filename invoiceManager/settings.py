@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'places',
     'products',
     'main',
+    'users',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -84,6 +85,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'users.Employee'
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 

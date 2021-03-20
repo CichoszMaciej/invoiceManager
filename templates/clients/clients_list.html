@@ -29,8 +29,9 @@
             <th scope="col">Nazwa klienta</th>
             <th scope="col">NIP</th>
             <th scope="col">Adres</th>
-            <th scope="col">City</th>
+            <th scope="col">Miasto</th>
             <th scope="col">Czas stworzenia</th>
+            <th scope="col">Aktywny</th>
         </tr>
         </thead>
         <tbody>
@@ -39,12 +40,22 @@
                 <td>{{ c.id }}</td>
                 <td>{{ c.client_name }}</td>
                 <td>{{ c.nip }}</td>
-                <td>{{ c.regon }}</td>
                 <td>{{ c.address }}</td>
+                <td>{{ c.city }}</td>
                 <td>{{ c.timestamp }}</td>
                 <td>
-                    <a href="" class="mx-2"><i class="fas fa-user-times"></i></a>
-                    <a href="" class="mx-2"><i class="fas fa-user-edit"></i></a>
+                    {% if c.is_active %}
+                        <i class="fas fa-check-circle"></i>
+                    {% else %}
+                        <i class="fas fa-times-circle"></i>
+                    {% endif %}</td>
+                <td>
+                    <a href="{% url 'toggle_client' c.id %}" class="mx-2">{% if c.is_active %}
+                        <i class="fas fa-power-off text-danger"></i>
+                    {% else %}
+                        <i class="fas fa-power-off text-success"></i>
+                    {% endif %}</a>
+                    <a href="{% url 'edit_client' c.id %}" class="mx-2"><i class="fas fa-user-edit"></i></a>
                 </td>
             </tr>
         {% endfor %}
