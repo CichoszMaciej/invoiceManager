@@ -37,6 +37,18 @@ class Invoice(models.Model):
     month = models.IntegerField(null=True, verbose_name="Miesiąc")
     year = models.IntegerField(null=True, verbose_name="Rok")
 
+    def recalculate(self):
+        invoice_items = InvoiceRecord.objects.filter(invoice=self)
+        self.price_gross = 0
+        self.price_net = 0
+        self.price_vat = 0
+        for i in invoice_items:
+            self.price_gross += i.total_price_gross
+            self.price_net += i.total_price_net
+            self.price_vat += i.total_price_vat
+
+        self.save()
+
     def __str__(self):
         return self.invoice_nr
 

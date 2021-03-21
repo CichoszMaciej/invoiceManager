@@ -3,44 +3,97 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item active" aria-current="page">
-                <a href="" class="btn btn-success">Nowa faktura</a>
+                <a href="{% url 'add_invoice_record' invoice.id %}" class="btn btn-success">Dodaj pozycję</a>
+                <a href="{% url 'edit_invoice' invoice.id %}" class="btn btn-secondary ml-3">Edytuj fakturę</a>
+                <a href="{% url 'generate_pdf' invoice.id %}" class="btn btn-warning ml-3">Generuj PDF</a>
             </li>
         </ol>
     </nav>
-    <table class="table table-light table-bordered table-striped">
-        <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Produkt</th>
-            <th scope="col">Cena brutto</th>
-            <th scope="col">Cena netto</th>
-            <th scope="col">Cena vat</th>
-            <th scope="col">VAT</th>
-            <th scope="col">Ilość</th>
-            <th scope="col">Wartość brutto</th>
-            <th scope="col">Wartość netto</th>
-            <th scope="col">Wartość VAT</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for i in items %}
+    <div class="clearfix">
+        <div class="col5" style="display: block; width: 50%; float: left;">
+            <span id="data"
+                  style="display: block; font-size: 18px;">Wystawiono dnia: {{ invoice.invoice_date|date:"d/m/Y" }}</span>
+        </div>
+        <div class="col5" style="display: block; width: 50%; float: left;">
+            <h3 id="invoiceId" style="font-size: 18px;">
+                {{ invoice.invoice_type.name }} nr {{ invoice.invoice_nr }}
+            </h3>
+        </div>
+    </div>
+    <div class="clearfix" style="margin-top: 20px;">
+        <div class="col5" style="display: block; width: 50%; float: left;">
+            {% if invoice.place.logo %}<img style="max-height: 80px; opacity: 0" src="" alt="logotyp"
+                                            class="img-responsive"/>{% else %} &nbsp; {% endif %}
+        </div>
+        <div class="col5" style="display: block; width: 50%; float: left;">
+            <div class="data" style="display: block; font-size: 18px;">Data
+                sprzedaży: {{ invoice.sales_date|date:"d/m/Y" }}</div>
+            <div class="data" style="display: block; font-size: 18px;">Termin
+                płatności: {{ invoice.payment_date|date:"d/m/Y" }}</div>
+        </div>
+    </div>
+
+    <div class="clearfix" style="margin-top: 20px;">
+        <div class="col5" style="display: block; width: 50%; float: left;">
+            <h3 style="font-size: 20px;">Sprzedawca:</h3>
+            <div class="data" style="display: block; font-size: 18px;">{{ invoice.place.name }}</div>
+            <div class="data"
+                 style="display: block; font-size: 18px;">{{ invoice.place.address }}</div>
+            <div class="data"
+                 style="display: block; font-size: 18px;">{% if invoice.place.nip %}NIP:
+                {{ invoice.place.nip }}{% endif %}</div>
+        </div>
+        <div class="col5" style="display: block; width: 50%; float: left;">
+            <h3 style="font-size: 20px;">Nabywca:</h3>
+            <div class="data" style="display: block; font-size: 18px;">{{ invoice.client.client_name }}</div>
+            <div class="data" style="display: block; font-size: 18px;">
+                {{ invoice.client.address }}
+            </div>
+            <div class="data"
+                 style="display: block; font-size: 18px;">{% if invoice.client.nip %}NIP:
+                {{ invoice.client.nip }}{% endif %}</div>
+        </div>
+        <table class="table table-light table-bordered table-striped">
+            <thead>
             <tr>
-                <td>{{ i.id }}</td>
-                <td>{{ i.product.name }}</td>
-                <td>{{ i.price_gross }}</td>
-                <td>{{ i.price_net }}</td>
-                <td>{{ i.price_vat }}</td>
-                <td>{{ i.vat_rate }}</td>
-                <td>{{ i.quantity }}</td>
-                <td>{{ i.total_price_gross }}</td>
-                <td>{{ i.total_price_net }}</td>
-                <td>{{ i.total_price_vat }}</td>
-                <td>
-                    <a href="" class="mx-2"><i class="fas fa-plus-circle"></i></a>
-                    <a href="" class="mx-2"><i class="fas fa-user-edit"></i></a>
-                </td>
+                <th scope="col">ID</th>
+                <th scope="col">Produkt</th>
+                <th scope="col">Cena brutto</th>
+                <th scope="col">Cena netto</th>
+                <th scope="col">Cena vat</th>
+                <th scope="col">VAT</th>
+                <th scope="col">Ilość</th>
+                <th scope="col">Wartość brutto</th>
+                <th scope="col">Wartość netto</th>
+                <th scope="col">Wartość VAT</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for i in items %}
+                <tr>
+                    <td>{{ i.id }}</td>
+                    <td>{{ i.product.name }}</td>
+                    <td>{{ i.price_gross }}</td>
+                    <td>{{ i.price_net }}</td>
+                    <td>{{ i.price_vat }}</td>
+                    <td>{{ i.vat_rate }}</td>
+                    <td>{{ i.quantity }}</td>
+                    <td>{{ i.total_price_gross }}</td>
+                    <td>{{ i.total_price_net }}</td>
+                    <td>{{ i.total_price_vat }}</td>
+                    <td>
+                        <a href="{% url 'delete_invoice_record' i.id %}" class="mx-2"><i
+                                class="far fa-minus-square text-danger"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="6"></td>
+                <td><strong>Razem: </strong></td>
+                <td>{{ invoice.price_gross }}</td>
+                <td>{{ invoice.price_net }}</td>
+                <td>{{ invoice.price_vat }}</td>
+            </tr>
+            </tbody>
+        </table>
 {% endblock %}

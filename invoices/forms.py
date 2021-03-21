@@ -26,6 +26,10 @@ class InvoiceEditForm(ModelForm):
 class InvoiceRecordAdd(ModelForm):
     discount = DecimalField(decimal_places=2, initial=0, max_digits=10, min_value=0, label='Obniżka w PLN na sztuce')
 
+    def clean(self):
+        if self.cleaned_data.get('product').quantity_stock < self.cleaned_data.get('quantity'):
+            self.add_error('quantity', 'Ilość jest większa niż stan magazynowy!')
+
     class Meta:
         model = InvoiceRecord
         fields = ('product', 'quantity')

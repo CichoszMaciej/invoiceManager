@@ -1,11 +1,13 @@
-import json
 from decimal import Decimal
+from io import BytesIO
 
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.template.loader import render_to_string, get_template
 from django.urls import reverse
+from fpdf import FPDF, HTMLMixin
+from xhtml2pdf import pisa
 
 from invoices.forms import InvoiceForm, InvoiceRecordAdd, InvoiceEditForm
 from invoices.models import Invoice, InvoiceRecord
@@ -60,6 +62,7 @@ def view_invoice(request, invoice_id):
     invoice = get_object_or_404(Invoice, pk=invoice_id)
     invoice_items = InvoiceRecord.objects.filter(invoice=invoice)
     context = {
+        'invoice': invoice,
         'items': invoice_items
     }
 
@@ -85,9 +88,14 @@ def add_invoice_record(request, invoice_id):
             invoice.price_gross += Decimal(invoice_record.total_price_gross)
             invoice.price_net += Decimal(invoice_record.total_price_net)
             invoice.price_vat += Decimal(invoice_record.total_price_vat)
+
+            product = invoice_record.product
+            product.quantity_stock -= invoice_record.quantity
+            product.save()
+
             invoice_record.save()
             invoice.save()
-            return HttpResponseRedirect(reverse(invoice_list) + '?info=success')
+            return HttpResponseRedirect(reverse(view_invoice, kwargs={'invoice_id': invoice.id}) + '?info=success')
         else:
             return render(request, 'invoices/new_invoice_record.html', {'form': form})
 
@@ -132,3 +140,42 @@ def delete_invoice(request, invoice_id):
         return HttpResponseRedirect(reverse(invoice_list) + '?info=delete')
     else:
         return render(request, 'invoices/delete_invoice.html', {'invoice': invoice})
+
+
+@login_required()
+def delete_invoice_record(request, record_id):
+    invoice_record = get_object_or_404(InvoiceRecord, pk=record_id)
+    if 'd' in request.GET and request.GET['d'] == 'yes':
+        invoice_record.delete()
+        invoice_record.invoice.recalculate()
+        return HttpResponseRedirect(
+            reverse(view_invoice, kwargs={'invoice_id': invoice_record.invoice.id}) + '?info=delete')
+    else:
+        return render(request, 'invoices/delete_invoice_record.html', {'invoice_record': invoice_record})
+
+
+class HtmlPdf(FPDF, HTMLMixin):
+    pass
+
+
+def render_to_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("utf-8")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+
+
+@login_required()
+def generate_pdf(request, invoice_id):
+    invoice = get_object_or_404(Invoice, pk=invoice_id)
+    invoice_items = InvoiceRecord.objects.filter(invoice=invoice)
+    context = {
+        'invoice': invoice,
+        'items': invoice_items
+    }
+    pdf = render_to_pdf('invoices/invoice_pdf.html', context)
+
+    return HttpResponse(pdf, content_type='application/pdf')
