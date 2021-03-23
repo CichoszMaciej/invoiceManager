@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <ul class="nav justify-content-center">
+
+        <h1>Wartość faktur na przestrzeni dni</h1>
+
+    </ul>
+    <div class="row ml-3">
+        <div class="col-xl-9 col-md-9">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">
+                    <canvas class="bg-light" id="invoice-chart" width="360" height="200"
+                            data-url="{% url 'invoice_stats_graph' %}"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script type="text/javascript">
+        $(function () {
+            const $invoiceChart = $("#invoice-chart");
+            $.ajax({
+                url: $invoiceChart.data("url"),
+                success: function (data) {
+                    var ctx = $invoiceChart[0].getContext("2d");
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Wartość faktury',
+                                backgroundColor: 'blue',
+                                data: data.data
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            legend: {
+                                display: false
+                            },
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        display: false
+                                    }
+                                }]
+                            }
+                        }
+                    });
+
+                }
+            });
+        });
+    </script>
+{% endblock %}

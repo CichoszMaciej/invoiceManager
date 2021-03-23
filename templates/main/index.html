@@ -16,18 +16,18 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{%  url 'add_client' %}">
+            <a href="{% url 'add_client' %}">
                 <button type="button" class="btn btn-primary btn-lg">Dodaj kontrahenta</button>
             </a>
         </li>
         <li class="nav-item">
-            <a href="{%  url 'add_product' %}">
+            <a href="{% url 'add_product' %}">
                 <button type="button" class="btn btn-primary btn-lg">Dodaj dodaj produkt</button>
             </a>
         </li>
     </ul>
     <br>
     <br>
-    <p>Twój dzisiejszy przychód: </p>
+    <p>Twój dzisiejszy przychód: <strong>{{ sum_today }} PLN</strong></p>
 
 {% endblock %}

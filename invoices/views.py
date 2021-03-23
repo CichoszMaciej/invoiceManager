@@ -1,8 +1,9 @@
+from datetime import datetime
 from decimal import Decimal
 from io import BytesIO
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string, get_template
 from django.urls import reverse
@@ -179,3 +180,24 @@ def generate_pdf(request, invoice_id):
     pdf = render_to_pdf('invoices/invoice_pdf.html', context)
 
     return HttpResponse(pdf, content_type='application/pdf')
+
+
+@login_required()
+def invoice_stats_graph(request):
+    labels = []
+    data = []
+    invoices = Invoice.objects.order_by('-invoice_date').all()[:100]
+
+    for invoice in invoices:
+        labels.append(datetime.fromisoformat(str(invoice.invoice_date)).strftime("%Y-%m-%d"))
+        data.append(invoice.price_gross)
+
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
+
+
+@login_required()
+def stats(request):
+    return render(request, 'invoices/stat.html')
